@@ -1,0 +1,9 @@
+[2025-08-07 21:08:49.160859] ⚠️ Invalid data for Kancheepuram
+[2025-08-07 21:08:49.877598] ⚠️ Invalid data for Nilgiris
+[2025-08-07 21:08:50.925104] ✅ Uploaded data/processed/weather_20250807_153850.csv to S3 as weather_data/weather_20250807_153850.csv
+[2025-08-07 21:40:42.085841] ⚠️ Invalid data for Kancheepuram
+[2025-08-07 21:40:42.594628] ⚠️ Invalid data for Nilgiris
+[2025-08-07 21:40:43.723472] ✅ Uploaded data/processed/weather_20250807_161043.csv to S3 as weather_data/weather_20250807_161043.csv
+[2025-08-08 19:39:36.319404] ⚠️ Invalid data for Kancheepuram
+[2025-08-08 19:39:37.007169] ⚠️ Invalid data for Nilgiris
+[2025-08-08 19:39:38.244704] ✅ Uploaded data/processed/weather_20250808_140937.csv to S3 as weather_data/weather_20250808_140937.csv
