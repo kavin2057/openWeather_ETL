@@ -1,111 +1,122 @@
-🌦️ AWS Weather ETL Pipeline
-This project builds an end-to-end ETL pipeline to fetch real-time weather data from the OpenWeatherMap API for all cities in Tamil Nadu, India, transform it into a clean CSV format, and upload it to an AWS S3 bucket using a scheduled cron job on an EC2 instance.
+# 🌦️ AWS ETL Weather Data Pipeline
 
-🚀 Features
-✅ Extract weather data via OpenWeatherMap API
+This project is an **ETL (Extract, Transform, Load)** pipeline built in **Python**, designed to fetch real-time weather data for cities in Tamil Nadu using the **OpenWeatherMap API**, transform the JSON into structured CSV format, and store it on **AWS S3**.
 
-✅ Transform JSON to CSV
+---
 
-✅ Save weather data daily with date-wise filenames
+## 📌 Features
 
-✅ Upload to AWS S3 using boto3
+- 🔄 Scheduled daily with **cron** on an EC2 instance
+- ☁️ Connects to **OpenWeather API** to fetch weather data
+- 🔧 Transforms JSON → CSV
+- 📤 Uploads clean data to **AWS S3**
+- 📦 Designed with portability and simplicity
 
-✅ Fully automated via Scheduling job using Apache Airflow on EC2
+---
 
-✅ Cost-effective: Built entirely on AWS Free Tier
+## 🏗️ Architecture
+
+```plaintext
++-------------+        +---------------------+        +----------------+
+|  EC2 Server | ---->  |  Python ETL Script  | ---->  |     AWS S3     |
++-------------+        +---------------------+        +----------------+
+       |                         |                            |
+       |                                                      |
+       |                Fetch weather data                    |
+       |                         |                            |
+       |                                                      |
+       |              Transform JSON → CSV                    |
+       |                         |                            |
+       |                                                      |
+       |__            Upload to S3 bucket                   __|
+
+
+
+🧪 Tech Stack
+Language: Python 3.x
+
+Cloud Services: AWS EC2, AWS S3
+
+Scheduler: cron
+
+API: OpenWeatherMap
+
+File Formats: JSON, CSV
+
 
 📁 Project Structure
 
 aws_etl/
-│
-├── cities.py             # Tamil Nadu cities list
-├── weather_etl.py        # Main ETL logic
-├── config.py             # API key and S3 bucket config
-├── requirements.txt      # Python dependencies
-└── README.md             # Project documentation (you’re here!)
+├── weather_etl.py           # Main ETL script
+├── config.py                # Contains API keys and settings
+├── utils.py                 # Helper functions (optional)
+├── cities.txt               # List of Tamil Nadu cities
+├── cron.log                 # Logs from cron jobs
+├── requirements.txt         # Dependencies
+└── venv/                    # Python virtual environment
 
 
-🛠️ Tech Stack
-Component	Tool
-Programming	Python
-Cloud Platform	AWS (S3 + EC2)
-Scheduler	Cron (on Ubuntu EC2 instance)
-Storage Format	CSV
-Data Source	OpenWeatherMap API
 
-🧩 Setup Instructions
-1️⃣ Clone the Repo
-bash
-Copy
-Edit
-git clone https://github.com/yourusername/aws-weather-etl.git
-cd aws-weather-etl
-2️⃣ Install Requirements
-bash
-Copy
-Edit
+⚙️ Setup Instructions
+1. ✅ Prerequisites
+AWS account with:
+
+An S3 bucket created
+
+An EC2 instance (Ubuntu recommended)
+
+An API key from OpenWeatherMap
+
+
+2. 💻 Installation
+SSH into your EC2 and follow:
+
+sudo apt update && sudo apt install python3-pip -y
+git clone <your-repo-url>
+cd aws_etl
+python3 -m venv venv
+source venv/bin/activate
 pip install -r requirements.txt
-3️⃣ Configure Settings
-Edit config.py with your API key and S3 bucket:
 
-python
-Copy
-Edit
+
+3. 🔑 Configuration
+Edit config.py:
+
 API_KEY = "your_openweather_api_key"
-BUCKET_NAME = "your-s3-bucket-name"
-4️⃣ Run the Script Manually (for testing)
-bash
-Copy
-Edit
-python3 weather_etl.py
-⏰ Automate with Cron (on EC2)
-Edit your crontab:
+S3_BUCKET = "your-s3-bucket-name"
+REGION = "your-aws-region"
 
-bash
-Copy
-Edit
+
+4. 📆 Schedule via Cron
+Open crontab:
+
 crontab -e
-Add the following line to run the ETL script daily at 7:30 AM:
+Add this line to run the ETL script daily at 2:30 AM:
+
+30 2 * * * /home/ubuntu/aws_etl/venv/bin/python /home/ubuntu/aws_etl/weather_etl.py >> /home/ubuntu/aws_etl/cron.log 2>&1
+📊 Sample Output
+Uploaded file in S3:
 
 
-30 7 * * * /usr/bin/python3 /home/ubuntu/aws_etl/weather_etl.py >> /home/ubuntu/aws_etl/cron.log 2>&1
-🧪 Output Example
-CSV Output:
+weather_tamilnadu_2025-08-08.csv
+Sample rows:
 
-csv
+City	Temp (°C)	Weather	Humidity (%)	Wind Speed
+Chennai	32.5	Clear	60	3.5 m/s
+Madurai	30.2	Cloudy	65	2.8 m/s
+Coimbatore	29.8	Rain	70	4.2 m/s
 
-city,temperature,humidity,weather,datetime
-Chennai,32.5,65,Clear,2025-08-08 07:30:00
-Madurai,33.2,60,Cloudy,2025-08-08 07:30:00
+🚀 Future Improvements
+Add Airflow or Prefect for scheduling instead of cron
 
+Store in AWS RDS or Redshift for queryable analytics
 
-📦 Sample S3 File Structure
-arduino
+Add email notifications on job success/failure
 
-s3://your-bucket-name/
-├── weather_data/
-│   ├── weather_2025-08-08.csv
-│   ├── weather_2025-08-09.csv
-│   └── ...
+Include data validation and unit tests
 
-
-📌 Why This Project Matters
-This mini project demonstrates how real-world Data Engineering works:
-
-Real-time data fetching
-
-Data cleaning and transformation
-
-Cloud storage and automation
-
-Infrastructure and cost-awareness
-
-Perfect as a beginner-friendly portfolio project for data engineers and cloud learners!
-
-📚 Credits
-OpenWeatherMap API — openweathermap.org
-
-AWS Free Tier — EC2, S3
-
-🙌 Author
-Kavin — Aspiring Cloud Data Engineer
+🧠 Learnings
+✅ How to build a full ETL pipeline
+✅ How to interact with REST APIs in Python
+✅ How to use cron and automate on EC2
+✅ How to store structured data in S3
